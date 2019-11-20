@@ -74,10 +74,12 @@ pool2 = tf.layers.max_pooling2d(
 )  # 形状 [7, 7, 64]
 
 # 平坦化（flat）。降维
+# 降维肯定会丢失一些信息（这就好比将一个图片压缩成 JPEG 的格式会降低图像的质量），因此即使这种方法可以加快训练的速度，同时也会让你的系统表现的稍微差一点。降维会让你的工作流水线更复杂因而更难维护。所有你应该先尝试使用原始的数据来训练，如果训练速度太慢的话再考虑使用降维。在某些情况下，降低训练集数据的维度可能会筛选掉一些噪音和不必要的细节，这可能会让你的结果比降维之前更好（这种情况通常不会发生；它只会加快你训练的速度）。
+#TODO:不reshape会报形状错误,猜测是tf.losses.softmax_cross_entropy的logits只能接受二维数组?
 flat = tf.reshape(pool2, [-1, 7 * 7 * 64])  # 形状 [7 * 7 * 64, ]
 
-# 1024 个神经元的全连接层
-dense = tf.layers.dense(inputs=flat, units=1024, activation=tf.nn.relu)
+# 1024 个神经元的全连接层 
+dense = tf.layers.dense(inputs=flat, units=1024, activation=tf.nn.relu) #TODO:没有这个全连接层准确率低很多,不知道为啥
 
 # Dropout : 丢弃 50%（rate=0.5）
 dropout = tf.layers.dropout(inputs=dense, rate=0.5)
@@ -97,7 +99,7 @@ train_op = tf.train.AdamOptimizer(learning_rate=0.001).minimize(loss)
 # 返回 (accuracy, update_op), 会创建两个 局部变量
 accuracy = tf.metrics.accuracy(
     labels=tf.argmax(output_y, axis=1),
-    predictions=tf.argmax(logits, axis=1),)[1]
+    predictions=tf.argmax(logits, axis=1),)[1] #[1]取第一个(accuracy) axis=1表示行
 
 # 创建会话
 sess = tf.Session()
@@ -117,7 +119,8 @@ for i in range(5000):
 test_output = sess.run(logits, {input_x: test_x[:20]})
 inferred_y = np.argmax(test_output, 1)
 print(inferred_y, '推测的数字')  # 推测的数字
-print(np.argmax(test_y[:20], 1), '真实的数字')  # 真实的数字
+# np.argmax返回的是数组的索引,由于数字是0-9,索引也是0-9,因此索引就是数字,
+print(np.argmax(test_y[:20], 1), '真实的数字')  #索引代表的数字
 
 # 关闭会话
 sess.close()
