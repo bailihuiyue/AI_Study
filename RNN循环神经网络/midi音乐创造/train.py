@@ -21,16 +21,8 @@ from network import *
 # 但一般我们都不止训练一个 Epoch
 """
 
-# TODO:import 训练原理:
-# 1.先传进去一个序列入:ABCDEF
-# 2.tf根据序列生成下一个音符,如ABCDEFG,
-# 3.然后判断计算出的G跟实际的音符的差别,
-# 4.再反向传播更新损失函数等
-# 5.继续第一步,序列向后延伸,舍弃最初的一个(组)音符,如BCDEFA,如此循环
 
 # 训练神经网络
-
-
 def train():
     notes = get_notes()
 
@@ -55,8 +47,7 @@ def train():
     callbacks_list = [checkpoint]
 
     # 用 fit 方法来训练模型
-    model.fit(network_input, network_output, epochs=100,
-              batch_size=64, callbacks=callbacks_list)
+    model.fit(network_input, network_output, epochs=100, batch_size=64, callbacks=callbacks_list)
 
 
 def prepare_sequences(notes, num_pitch):
@@ -75,13 +66,12 @@ def prepare_sequences(notes, num_pitch):
     network_input = []
     network_output = []
 
-    # 每次向后移动1个单位,例如从0-99,下次是1-100,以此类推2-101
     for i in range(0, len(notes) - sequence_length, 1):
-        sequence_in = notes[i: i + sequence_length]  # 特征值(trian_x)
-        sequence_out = notes[i + sequence_length]  # 标签纸(trian_y)
+        sequence_in = notes[i: i + sequence_length]
+        sequence_out = notes[i + sequence_length]
 
-        network_input.append([pitch_to_int[char] for char in sequence_in]) #将特征值写入数组,要将音调(ABCDE转换成数字,因为tf只能识别数字)
-        network_output.append(pitch_to_int[sequence_out]) #将标签值写入数组
+        network_input.append([pitch_to_int[char] for char in sequence_in])
+        network_output.append(pitch_to_int[sequence_out])
 
     n_patterns = len(network_input)
 
