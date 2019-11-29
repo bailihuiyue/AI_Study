@@ -80,12 +80,12 @@ def prepare_sequences(notes, num_pitch):
         sequence_in = notes[i: i + sequence_length]  # 特征值(trian_x)
         sequence_out = notes[i + sequence_length]  # 标签纸(trian_y)
 
-        network_input.append([pitch_to_int[char] for char in sequence_in]) #将特征值写入数组,要将音调(ABCDE转换成数字,因为tf只能识别数字)
+        network_input.append([pitch_to_int[char] for char in sequence_in]) #将特征值写入数组,要将音调(ABCDE转换成数字,因为tf只能识别数字) 每次添加一个长度为100的数组,network_input最终的形状是[100*(len(notes) - sequence_length)]
         network_output.append(pitch_to_int[sequence_out]) #将标签值写入数组
 
-    n_patterns = len(network_input)
+    n_patterns = len(network_input) #长度为len(notes) - sequence_length,按照本项目给的数据量为42685
 
-    # 将输入的形状转换成神经网络模型可以接受的
+    # 将输入的形状转换成神经网络模型可以接受的      (42685*100*1)   
     network_input = np.reshape(network_input, (n_patterns, sequence_length, 1))
 
     # 将 输入 标准化 / 归一化
