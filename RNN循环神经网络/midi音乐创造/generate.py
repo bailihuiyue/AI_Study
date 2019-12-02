@@ -68,18 +68,19 @@ def prepare_sequences(notes, pitch_names, num_pitch):
 
     return network_input, normalized_input
 
-
+#                                       所有不重复的音调的名字,所有不重复的音调的数目
 def generate_notes(model, network_input, pitch_names, num_pitch):
     """
     基于一序列音符，用神经网络来生成新的音符
     """
 
-    # 从输入里随机选择一个序列，作为"预测"/生成的音乐的起始点
+    # 从输入里随机选择一个序列，作为"预测"/生成的音乐的起始点 network_input是一个[?*100]的数组,详情看train.py的prepare_sequences方法,意思一样
     start = np.random.randint(0, len(network_input) - 1)
 
     # 创建一个字典，用于映射 整数 和 音调
     int_to_pitch = dict((num, pitch) for num, pitch in enumerate(pitch_names))
 
+    #选出来的一段音乐数组 
     pattern = network_input[start]
 
     # 神经网络实际生成的音调
@@ -92,7 +93,7 @@ def generate_notes(model, network_input, pitch_names, num_pitch):
         prediction_input = prediction_input / float(num_pitch)
 
         # 用载入了训练所得最佳参数文件的神经网络来 预测/生成 新的音调
-        prediction = model.predict(prediction_input, verbose=0)
+        prediction = model.predict(prediction_input, verbose=0) #verbose表示冗余模式,不知道啥意思,prediction预测结果类似独热码
 
         # argmax 取最大的那个维度（类似 One-Hot 独热码）
         index = np.argmax(prediction)
@@ -102,7 +103,7 @@ def generate_notes(model, network_input, pitch_names, num_pitch):
 
         prediction_output.append(result)
 
-        # 往后移动
+        # 往后移动,然后自己跟自己生成新的音乐例如,ABC,C是预测出来的,下次就是BCD,D又是预测出来的
         pattern.append(index)
         pattern = pattern[1:len(pattern)]
 

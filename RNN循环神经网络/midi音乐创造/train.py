@@ -39,6 +39,7 @@ def train():
 
     network_input, network_output = prepare_sequences(notes, num_pitch)
 
+    # 构建神经网络 这里network_model里面调用了Sequential传入network_input并不是为了进行模型的计算,而是使用传入的数据进行shape的计算,构建神经网络模型的样子,下面的model.fit才是真正使用传入的数据进行计算
     model = network_model(network_input, num_pitch)
 
     filepath = "weights-{epoch:02d}-{loss:.4f}.hdf5"
@@ -52,10 +53,10 @@ def train():
         save_best_only=True,  # 不替换最近的数值最佳的监控对象的文件
         mode='min'      # 取损失最小的
     )
-    callbacks_list = [checkpoint]
+    callbacks_list = [checkpoint] #callbacks_list会有多个,所以是数组
 
-    # 用 fit 方法来训练模型
-    model.fit(network_input, network_output, epochs=100,
+    # 用 fit 方法来训练模型,callbacks每个epochs之后进行回调
+    model.fit(network_input, network_output, epochs=1,
               batch_size=64, callbacks=callbacks_list)
 
 
@@ -80,12 +81,14 @@ def prepare_sequences(notes, num_pitch):
         sequence_in = notes[i: i + sequence_length]  # 特征值(trian_x)
         sequence_out = notes[i + sequence_length]  # 标签纸(trian_y)
 
-        network_input.append([pitch_to_int[char] for char in sequence_in]) #将特征值写入数组,要将音调(ABCDE转换成数字,因为tf只能识别数字) 每次添加一个长度为100的数组,network_input最终的形状是[100*(len(notes) - sequence_length)]
-        network_output.append(pitch_to_int[sequence_out]) #将标签值写入数组
+        # 将特征值写入数组,要将音调(ABCDE转换成数字,因为tf只能识别数字) 每次添加一个长度为100的数组,network_input最终的形状是[100*(len(notes) - sequence_length)]
+        network_input.append([pitch_to_int[char] for char in sequence_in])
+        network_output.append(pitch_to_int[sequence_out])  # 将标签值写入数组
 
-    n_patterns = len(network_input) #长度为len(notes) - sequence_length,按照本项目给的数据量为42685
+    # 长度为len(notes) - sequence_length,按照本项目给的数据量为42685(所有midi的所有音符总和)
+    n_patterns = len(network_input)
 
-    # 将输入的形状转换成神经网络模型可以接受的      (42685*100*1)   
+    # 将输入的形状转换成神经网络模型可以接受的      (42685*100*1)
     network_input = np.reshape(network_input, (n_patterns, sequence_length, 1))
 
     # 将 输入 标准化 / 归一化
