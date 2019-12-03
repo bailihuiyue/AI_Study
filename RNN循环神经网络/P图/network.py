@@ -42,19 +42,20 @@ def discriminator_model():
 
 # 定义生成器模型
 # 从随机数来生成图片
+# 跟上边的定义判别器模型正好相反
 def generator_model():
     model = tf.keras.models.Sequential()
     # 输入的维度是 100, 输出维度（神经元个数）是1024 的全连接层
     model.add(tf.keras.layers.Dense(input_dim=100, units=1024))
     model.add(tf.keras.layers.Activation("tanh"))
     model.add(tf.keras.layers.Dense(128 * 8 * 8))  # 8192 个神经元的全连接层
-    model.add(tf.keras.layers.BatchNormalization())  # 批标准化
+    model.add(tf.keras.layers.BatchNormalization())  # 批标准化 对前一层的激活函数进行标准化
     model.add(tf.keras.layers.Activation("tanh"))
     model.add(tf.keras.layers.Reshape((8, 8, 128), input_shape=(128 * 8 * 8, )))  # 8 x 8 像素
-    model.add(tf.keras.layers.UpSampling2D(size=(2, 2)))  # 16 x 16像素
+    model.add(tf.keras.layers.UpSampling2D(size=(2, 2)))  # 16 x 16像素 反池化, MaxPool2D不准确,其实应该叫亚采样,英文叫SubSampling,这样就能和UpSampling对应起来了
     model.add(tf.keras.layers.Conv2D(128, (5, 5), padding="same"))
     model.add(tf.keras.layers.Activation("tanh"))
-    model.add(tf.keras.layers.UpSampling2D(size=(2, 2)))  # 32 x 32像素
+    model.add(tf.keras.layers.UpSampling2D(size=(2, 2)))  # 32 x 32像素 
     model.add(tf.keras.layers.Conv2D(128, (5, 5), padding="same"))
     model.add(tf.keras.layers.Activation("tanh"))
     model.add(tf.keras.layers.UpSampling2D(size=(2, 2)))  # 64 x 64像素

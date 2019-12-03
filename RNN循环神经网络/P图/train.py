@@ -22,6 +22,10 @@ def train():
     # 获取训练数据
     data = []
     for image in glob.glob("images/*"):
+        # 报错module 'scipy.misc' has no attribute 'imread'
+        # 解决方法
+        # pip install scipy==1.1.0
+        # pip install pillow==6.0.0
         image_data = misc.imread(image)  # imread 利用 PIL 来读取图片数据
         data.append(image_data)
     input_data = np.array(data)
@@ -42,20 +46,21 @@ def train():
 
     # 配置 生成器 和 判别器
     g.compile(loss="binary_crossentropy", optimizer=g_optimizer)
-    d_on_g.compile(loss="binary_crossentropy", optimizer=g_optimizer)
+    d_on_g.compile(loss="binary_crossentropy", optimizer=g_optimizer) #compile用于对神经网络进行配置
     d.trainable = True
     d.compile(loss="binary_crossentropy", optimizer=d_optimizer)
 
     # 开始训练
-    for epoch in range(EPOCHS):
-        for index in range(int(input_data.shape[0] / BATCH_SIZE)):
-            input_batch = input_data[index * BATCH_SIZE : (index + 1) * BATCH_SIZE]
+    for epoch in range(EPOCHS): #input_data的type:[图片总数*每一张图片的信息(64*64*3)]
+        for index in range(int(input_data.shape[0] / BATCH_SIZE)): #图片总数/批量大小,获取循环次数
+            input_batch = input_data[index * BATCH_SIZE : (index + 1) * BATCH_SIZE] #每次都取BATCH_SIZE(128)数量的图片进行训练
 
-            # 连续型均匀分布的随机数据（噪声）
-            random_data = np.random.uniform(-1, 1, size=(BATCH_SIZE, 100))
+            # 连续型均匀分布的随机数据（噪声）因为generator_model接收的输入维度是100,所以random的维度也是100,具体为啥是100就不清楚了
+            random_data = np.random.uniform(-1, 1, size=(BATCH_SIZE, 100)) #size=(m,n,k), 表示输出m*n*k个样本,(128, 100)
             # 生成器 生成的图片数据
             generated_images = g.predict(random_data, verbose=0)
 
+            #concatenate表示首尾相连 
             input_batch = np.concatenate((input_batch, generated_images))
             output_batch = [1] * BATCH_SIZE + [0] * BATCH_SIZE
 
