@@ -32,7 +32,7 @@ class Maze(tk.Tk, object):
         self.action_space = ['u', 'd', 'l', 'r']  # 上，下，左，右 四个 action（动作）
         self.n_actions = len(self.action_space)   # action 的数目
         self.title('Q Learning')
-        self.geometry('{0}x{1}'.format(WIDTH * UNIT, HEIGHT * UNIT))  # Tkinter 的几何形状
+        self.geometry('{0}x{1}'.format(WIDTH * UNIT, HEIGHT * UNIT))  # Tkinter 的几何形状 迷宫的大小
         self.build_maze()
 
     # 创建迷宫
@@ -50,7 +50,7 @@ class Maze(tk.Tk, object):
             x0, y0, x1, y1 = 0, r, WIDTH * UNIT, r
             self.canvas.create_line(x0, y0, x1, y1)
 
-        # 零点（左上角）
+        # 零点（左上角） 右:x为正数,下:y为正数
         origin = np.array([20, 20])
 
         # 创建我们的探索者 机器人（robot）
