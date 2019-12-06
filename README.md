@@ -131,4 +131,6 @@ Windows,Linux,macOS三平台安装OpenAI的Gym和Universe:<https://www.jianshu.c
 
 Flappy Bird讲解 Q - learning <https://www.zhihu.com/question/26408259>
 
+深度强化学习相关资料:<https://www.jianshu.com/p/5ceca53aff0b>,<https://blog.csdn.net/weixin_42389349/article/details/82935123>
+
 强化学习效果展示https://mp.weixin.qq.com/s?__biz=MzA4NjQ4MzU4OQ==&mid=2647882155&idx=2&sn=8ba089297419799ee6148be1a0a53395

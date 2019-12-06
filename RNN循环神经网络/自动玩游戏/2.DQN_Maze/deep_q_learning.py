@@ -37,15 +37,15 @@ class DeepQLearning:
         # 学习次数 (用于判断是否更换 Q_target_net 参数)
         self.learning_steps = 0
 
-        # 初始化全 0 记忆 [s, a, r, s_]
+        # 初始化全 0 记忆 [s, a, r, s_]            这个迷宫项目有两个特征值,所以是n_features*2,+2是 [s, a, r, s_] 中的 a, r
         self.memory = np.zeros((self.memory_size, n_features * 2 + 2))
 
         # 构建神经网络
         self.construct_network()
 
         # 提取 Q_target_net 和 Q_eval_net 的参数
-        t_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Q_target_net')
-        e_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Q_eval_net')
+        t_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Q_target_net') #Q_target_net 实际神经网络
+        e_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='Q_eval_net') #Q_eval_net估计 神经网络
         
         # 用 Q_eval_net 参数来替换 Q_target_net 参数
         with tf.variable_scope('target_replacement'):
@@ -71,7 +71,7 @@ class DeepQLearning:
         # 输入数据 [s, a, r, s_]
         with tf.variable_scope('input'):
             self.s = tf.placeholder(tf.float32, [None, self.n_features], name='s')  # State
-            self.a = tf.placeholder(tf.int32, [None, ], name='a')  # Action
+            self.a = tf.placeholder(tf.int32, [None, ], name='a')  # Action 上下左右
             self.r = tf.placeholder(tf.float32, [None, ], name='r')  # Reward
             self.s_ = tf.placeholder(tf.float32, [None, self.n_features], name='s_')  # 下一个 State
 
@@ -82,7 +82,7 @@ class DeepQLearning:
         with tf.variable_scope('Q_eval_net'):
             e1 = tf.layers.dense(self.s, 20, tf.nn.relu, kernel_initializer=w_initializer,
                                  bias_initializer=b_initializer, name='e1')
-            self.q_eval = tf.layers.dense(e1, self.n_actions, kernel_initializer=w_initializer,
+            self.q_eval = tf.layers.dense(e1, self.n_actions, kernel_initializer=w_initializer, #输出运动的4个方向
                                           bias_initializer=b_initializer, name='e2')
 
         # 创建 Q_target 神经网络, 提供 target Q
