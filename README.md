@@ -7,6 +7,8 @@ ai(机器学习和深度学习)和人学习一样,书读百遍,其义自见,不�
 
 莫烦的知乎专栏,机器学习https://zhuanlan.zhihu.com/morvan
 
+莫烦的github<https://morvanzhou.github.io/>
+
 1.ai简介,60年历史等等
 2.名词解释:分类,聚类,回归,https://www.cnblogs.com/XinZhou-Annie/p/7253049.html
 3.神经元特征值,隐层,对分析结果的影响:http://playground.tensorflow.org/
