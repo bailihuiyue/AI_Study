@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 """
-Policy Gradient 算法（REINFORCE）。做决策的部分，相当于机器人的大脑
+Policy Gradient(策略梯度) 算法（REINFORCE）。做决策的部分，相当于机器人的大脑
 """
 
 import numpy as np
@@ -17,7 +17,7 @@ except:
 class PolicyGradient:
     def __init__(self,
                  lr,      # 学习速率
-                 s_size,  # state/observation 的特征数目
+                 s_size,  # state/observation 的特征数目 这个游戏的特征数目是4
                  a_size,  # action 的数目
                  h_size,  # hidden layer（隐藏层）神经元数目
                  discount_factor=0.99  # 折扣因子
@@ -68,7 +68,8 @@ class PolicyGradient:
         self.update_batch = optimizer.apply_gradients(zip(self.gradient_holders, train_vars))
 
     # 计算折扣后的 reward
-    # 公式： E = r1 + r2 * gamma + r3 * gamma * gamma + r4 * gamma * gamma * gamma ...
+    # 让达到目标越远的点的奖励(reward)变得越小
+    # 公式： E = r1 + r2 * gamma + r3 * gamma * gamma + r4 * gamma * gamma * gamma ... 
     def discount_rewards(self, rewards):
         discounted_r = np.zeros_like(rewards)
         running_add = 0

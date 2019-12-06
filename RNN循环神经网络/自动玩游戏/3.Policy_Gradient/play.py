@@ -14,7 +14,7 @@ from policy_gradient import PolicyGradient
 # 伪随机数。为了能够复现结果
 np.random.seed(1)
 
-env = gym.make('CartPole-v0')
+env = gym.make('CartPole-v0') #创建游戏
 env = env.unwrapped    # 取消限制
 env.seed(1)   # 普通的 Policy Gradient 方法, 回合的方差比较大, 所以选一个好点的随机种子
 
@@ -27,10 +27,10 @@ update_frequency = 5   # 更新频率，多少回合更新一次
 total_episodes = 3000  # 总回合数
 
 # 创建 PolicyGradient 对象
-agent = PolicyGradient(lr=0.01,
-                       a_size=env.action_space.n,   # 对 CartPole-v0 是 2, 两个 action，向左/向右
-                       s_size=env.observation_space.shape[0],  # 对 CartPole-v0 是 4
-                       h_size=8)
+agent = PolicyGradient(lr=0.01, #学习率为0.01
+                       a_size=env.action_space.n,   # 对 CartPole-v0 是 2, 两个 action，向左/向右       a:action
+                       s_size=env.observation_space.shape[0],  # 对 CartPole-v0 是 4                   s:state
+                       h_size=8) #隐层数目为8
 
 with tf.Session() as sess:
     # 初始化所有全局变量
