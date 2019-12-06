@@ -5,6 +5,8 @@
 
 ai(机器学习和深度学习)和人学习一样,书读百遍,其义自见,不断地学习,理解会加深
 
+莫烦的知乎专栏,机器学习https://zhuanlan.zhihu.com/morvan
+
 1.ai简介,60年历史等等
 2.名词解释:分类,聚类,回归,https://www.cnblogs.com/XinZhou-Annie/p/7253049.html
 3.神经元特征值,隐层,对分析结果的影响:http://playground.tensorflow.org/
@@ -41,13 +43,15 @@ RNN循环神经网络 文件夹中的部分demo来自慕课网,我增加了注�
 
 2.P图使用的是DCGAN,深度卷积对抗网络
 
-3.自动玩游戏使用的是强化学习(深度强化学习)RL
+3.自动玩游戏使用的是强化学习(深度强化学习)RL,
+
+由于windows不支持安装环境,所以代码没有实际测试,具体原理可以看下面分享的链接
 
 
 
 深度强化学习分类:
 
-在线学习(亲子参与其中):Sarsa
+在线学习(亲自参与其中):Sarsa
 
 离线学习(看别人,从过往经验中学习):Q Learning
 
@@ -116,3 +120,15 @@ js对比py
 2.js回调很像协程
 3.js现在也有装饰器了
 4.都有全局对象
+
+
+
+强化学习资料
+
+Windows,Linux,macOS三平台安装OpenAI的Gym和Universe:<https://www.jianshu.com/p/536d300a397e>
+
+什么是 Q-Learning :<https://zhuanlan.zhihu.com/p/24808797>
+
+Flappy Bird讲解 Q - learning <https://www.zhihu.com/question/26408259>
+
+强化学习效果展示https://mp.weixin.qq.com/s?__biz=MzA4NjQ4MzU4OQ==&mid=2647882155&idx=2&sn=8ba089297419799ee6148be1a0a53395

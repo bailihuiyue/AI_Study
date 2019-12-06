@@ -18,6 +18,7 @@ import numpy as np
 if sys.version_info.major == 2:
     import Tkinter as tk
 else:
+    # Python GUI编程(Tkinter) Python 提供了多个图形开发界面的库,
     import tkinter as tk
 
 WIDTH = 4   # 迷宫的宽度
@@ -96,7 +97,7 @@ class Maze(tk.Tk, object):
             robot_center[0] - 15, robot_center[1] - 15,
             robot_center[0] + 15, robot_center[1] + 15,
             fill='yellow')
-        # 返回 观测（observation）
+        # 返回 观测值（observation）
         return self.canvas.coords(self.robot)
 
     # 走一步（机器人实施 action）

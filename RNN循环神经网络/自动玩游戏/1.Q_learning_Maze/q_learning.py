@@ -7,10 +7,12 @@ Q Learning 算法。做决策的部分，相当于机器人的大脑
 import numpy as np
 import pandas as pd
 
+# 什么是 Q-Learning :<https://zhuanlan.zhihu.com/p/24808797>
+# Flappy Bird讲解 Q - learning <https://www.zhihu.com/question/26408259>
 
 class QLearning:
     def __init__(self, actions, learning_rate=0.01, discount_factor=0.9, e_greedy=0.1):
-        self.actions = actions        # action 列表
+        self.actions = actions     # action 列表
         self.lr = learning_rate       # 学习速率
         self.gamma = discount_factor  # 折扣因子
         self.epsilon = e_greedy       # 贪婪度
@@ -19,11 +21,11 @@ class QLearning:
     # 检测 q_table 中有没有这个 state
     # 如果还没有当前 state, 那我们就插入一组全 0 数据, 作为这个 state 的所有 action 的初始值
     def check_state_exist(self, state):
-        if state not in self.q_table.index:
+        if state not in self.q_table.index: #state:[5.0, 85.0, 35.0, 115.0],等价于key不存在,就添加一个新key:[5.0, 45.0, 35.0, 75.0]   0.0  0.0  0.0  0.0
             # 插入一组全 0 数据
             self.q_table = self.q_table.append(
                 pd.Series(
-                    [0] * len(self.actions),
+                    [0] * len(self.actions), #actions有四个,上下左右
                     index=self.q_table.columns,
                     name=state,
                 )
@@ -39,8 +41,8 @@ class QLearning:
         else:  # 选择 Q 值最高的 action
             state_action = self.q_table.loc[state, :]
             # 同一个 state, 可能会有多个相同的 Q action 值, 所以我们乱序一下
-            state_action = state_action.reindex(np.random.permutation(state_action.index))
-            action = state_action.idxmax()
+            state_action = state_action.reindex(np.random.permutation(state_action.index)) #reindex重新计算索引但是索引对应的值不会变
+            action = state_action.idxmax() #获取最大值的索引而不是获取最大索引
         return action
 
     # 学习。更新 Q 表中的值
@@ -57,4 +59,5 @@ class QLearning:
 
         # 更新 Q 表中 state-action 的值
         self.q_table.loc[s, a] += self.lr * (q_target - q_predict)
+        print(len(self.q_table))
 
