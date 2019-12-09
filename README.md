@@ -138,3 +138,15 @@ Flappy Bird讲解 Q - learning <https://www.zhihu.com/question/26408259>
 深度增强学习之Policy Gradient方法:<https://zhuanlan.zhihu.com/p/21725498>
 
 强化学习效果展示https://mp.weixin.qq.com/s?__biz=MzA4NjQ4MzU4OQ==&mid=2647882155&idx=2&sn=8ba089297419799ee6148be1a0a53395
+
+
+
+DeepLearningBook读书笔记<https://github.com/exacity/simplified-deeplearning>
+
+人工智能之机器学习常见算法:<https://www.cnblogs.com/xiyushimei/p/7874019.html>
+
+深度学习之美:<https://yq.aliyun.com/articles/86580>
+
+外语学习:西雅图工作英语
+
+数学学习:数学之美
